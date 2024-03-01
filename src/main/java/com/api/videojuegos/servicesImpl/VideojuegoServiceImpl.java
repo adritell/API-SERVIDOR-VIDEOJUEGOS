@@ -53,6 +53,6 @@ public class VideojuegoServiceImpl implements VideojuegosService {
 
     @Override
     public List<Videojuegos> searchVideojuegos(String passwd) {
-        return videojuegosRepository.findByKeywordIgnoreCase(passwd);
+        return videojuegosRepository.findByNombreContainingIgnoreCase(passwd);
     }
 }

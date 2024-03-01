@@ -8,7 +8,6 @@ import com.api.videojuegos.request.LoginRequest;
 import com.api.videojuegos.service.AuthenticationService;
 import com.api.videojuegos.service.JwtService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +22,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    @Autowired
     public AuthenticationServiceImpl(UsuarioRepository userRepository,
                                      PasswordEncoder passwordEncoder,
                                      JwtService jwtService,
