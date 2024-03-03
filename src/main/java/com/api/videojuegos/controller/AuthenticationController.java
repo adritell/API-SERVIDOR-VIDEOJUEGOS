@@ -11,6 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controlador para las operaciones de autenticación (signup, signin, logout).
+ */
+
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
@@ -20,6 +24,11 @@ public class AuthenticationController {
     @Autowired
     AuthenticationService authenticationService;
 
+    /**
+     * Registra un nuevo usuario en el sistema.
+     * @param request Objeto RegistroRequest con los datos del nuevo usuario.
+     * @return Respuesta de autenticación JWT.
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody RegistroRequest request) {
         try {
@@ -33,6 +42,11 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Inicia sesión para un usuario existente.
+     * @param request Objeto LoginRequest con las credenciales de inicio de sesión.
+     * @return Respuesta de autenticación JWT.
+     */
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody LoginRequest request) {
         try {
@@ -46,6 +60,10 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Cierra la sesión del usuario actual.
+     * @return Mensaje de confirmación de cierre de sesión.
+     */
     @PostMapping("/logout")
     public String logout() {
         logger.info("User has logged out");

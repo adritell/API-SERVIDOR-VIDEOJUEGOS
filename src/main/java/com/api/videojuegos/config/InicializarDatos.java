@@ -1,9 +1,15 @@
 package com.api.videojuegos.config;
 
+import com.api.videojuegos.entity.Rol;
 import com.api.videojuegos.entity.Usuario;
 import com.api.videojuegos.entity.Videojuegos;
 import com.api.videojuegos.repository.UsuarioRepository;
 import com.api.videojuegos.repository.VideojuegosRepository;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,11 +31,15 @@ public class InicializarDatos implements CommandLineRunner {
     public void run(String... args) throws Exception {
         try {
             // Usuario 1
+        	// Crear un conjunto de roles
+        	Set<Rol> roles = new HashSet<>();
+        	roles.add(Rol.ROLE_ADMIN);
             Usuario usuario1 = new Usuario();
             usuario1.setFirstName("Adrián");
             usuario1.setLastName("Tellado");
             usuario1.setEmail("adri@gmail.com");
             usuario1.setPassword(passwordEncoder.encode("password"));
+            usuario1.setRoles(roles);
             usuarioRepository.save(usuario1);
 
             // Usuario 2

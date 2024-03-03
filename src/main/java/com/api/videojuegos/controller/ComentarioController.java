@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+/**
+ * Controlador para las operaciones relacionadas con los comentarios.
+ */
+
 @RestController
 @RequestMapping("/api/v1/comentarios")
 public class ComentarioController {
@@ -21,6 +26,11 @@ public class ComentarioController {
     @Autowired
     ComentarioService comentarioService;
 
+    
+    /**
+     * Obtiene todos los comentarios.
+     * @return Lista de todos los comentarios.
+     */
     @GetMapping
     public ResponseEntity<List<Comentario>> getAllComentarios() {
         try {
@@ -33,6 +43,11 @@ public class ComentarioController {
         }
     }
 
+    /**
+     * Obtiene un comentario por su ID.
+     * @param id ID del comentario a obtener.
+     * @return Comentario correspondiente al ID proporcionado.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Comentario> getComentarioById(@PathVariable Long id) {
         try {
@@ -45,6 +60,11 @@ public class ComentarioController {
         }
     }
 
+    /**
+     * Agrega un nuevo comentario.
+     * @param comentario Objeto Comentario con la información del nuevo comentario.
+     * @return Respuesta de éxito.
+     */
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> addComentario(@RequestBody Comentario comentario) {
@@ -58,6 +78,11 @@ public class ComentarioController {
         }
     }
 
+    /**
+     * Elimina un comentario por su ID.
+     * @param id ID del comentario a eliminar.
+     * @return Respuesta de éxito.
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> deleteComentario(@PathVariable Long id) {

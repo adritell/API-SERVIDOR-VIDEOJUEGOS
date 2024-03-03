@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controlador para las operaciones relacionadas con los videojuegos.
+ */
 @RestController
 @RequestMapping("/api/v1/videojuegos")
 public class VideojuegosController {
@@ -22,6 +25,10 @@ public class VideojuegosController {
     @Autowired
     private VideojuegosService videojuegosService;
 
+    /**
+     * Obtiene la lista de todos los videojuegos.
+     * @return Lista de todos los videojuegos.
+     */
     @GetMapping
     public ResponseEntity<List<Videojuegos>> getAllVideojuegos() {
         try {
@@ -34,6 +41,12 @@ public class VideojuegosController {
         }
     }
 
+    
+    /**
+     * Obtiene un videojuego por su ID.
+     * @param id ID del videojuego a obtener.
+     * @return Videojuego correspondiente al ID proporcionado.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<?> getVideojuegosById(@PathVariable Long id) {
         try {
@@ -53,6 +66,11 @@ public class VideojuegosController {
     }
 
 
+    /**
+     * Crea un nuevo videojuego.
+     * @param videojuegos Objeto Videojuegos que contiene la información del nuevo videojuego.
+     * @return El videojuego creado.
+     */
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createVideojuegos(@RequestBody Videojuegos videojuegos) {
@@ -66,6 +84,13 @@ public class VideojuegosController {
         }
     }
 
+    
+    /**
+     * Actualiza un videojuego existente.
+     * @param id ID del videojuego a actualizar.
+     * @param videojuegos Objeto Videojuegos con la información actualizada.
+     * @return El videojuego actualizado.
+     */
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateVideojuegos(@PathVariable Long id, @RequestBody Videojuegos videojuegos) {
@@ -84,6 +109,12 @@ public class VideojuegosController {
         }
     }
 
+    
+    /**
+     * Elimina un videojuego por su ID.
+     * @param id ID del videojuego a eliminar.
+     * @return Respuesta de éxito.
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteVideojuegos(@PathVariable Long id) {
@@ -102,6 +133,12 @@ public class VideojuegosController {
         }
     }
 
+    
+    /**
+     * Busca videojuegos por una palabra clave.
+     * @param keyword Palabra clave para buscar videojuegos.
+     * @return Lista de videojuegos que coinciden con la palabra clave.
+     */
     @GetMapping("/search")
     public ResponseEntity<List<Videojuegos>> searchVideojuegos(@RequestParam String keyword) {
         try {
