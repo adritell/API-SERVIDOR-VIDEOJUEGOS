@@ -1,9 +1,14 @@
 package com.api.videojuegos.controller;
 
 import com.api.videojuegos.dto.JwtAuthenticationResponse;
+import com.api.videojuegos.entity.Rol;
+import com.api.videojuegos.entity.Usuario;
 import com.api.videojuegos.request.LoginRequest;
 import com.api.videojuegos.request.RegistroRequest;
 import com.api.videojuegos.service.AuthenticationService;
+
+import java.util.Collections;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +37,23 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody RegistroRequest request) {
         try {
-            logger.info("Received signup request: {}", request);
+            // Crear un nuevo usuario y asignarle el rol ROLE_USER por defecto
+            Usuario usuario = new Usuario();
+            usuario.setEmail(request.getEmail());
+            usuario.setFirstName(request.getNombre());
+            usuario.setLastName(request.getApellidos());
+            usuario.setPassword(request.getPassword());
+            usuario.setRoles(Collections.singleton(Rol.ROLE_USER)); 
+            
+            // Llamar al servicio de autenticación para registrar el usuario
             JwtAuthenticationResponse response = authenticationService.signup(request);
-            logger.info("Signup successful for user: {}", request.getEmail());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             logger.error("Error during signup process.", e);
             return new ResponseEntity<>("Error during signup process", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     /**
      * Inicia sesión para un usuario existente.

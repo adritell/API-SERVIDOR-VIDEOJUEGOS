@@ -1,7 +1,8 @@
 package com.api.videojuegos.servicesImpl;
 
 import com.api.videojuegos.dto.JwtAuthenticationResponse;
-import com.api.videojuegos.entity.*;
+import com.api.videojuegos.entity.Rol;
+import com.api.videojuegos.entity.Usuario;
 import com.api.videojuegos.repository.UsuarioRepository;
 import com.api.videojuegos.request.RegistroRequest;
 import com.api.videojuegos.request.LoginRequest;
@@ -18,12 +19,12 @@ import org.springframework.stereotype.Service;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UsuarioRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder; // Agregado
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationServiceImpl(UsuarioRepository userRepository,
-                                     PasswordEncoder passwordEncoder,
+                                     PasswordEncoder passwordEncoder, // Modificado
                                      JwtService jwtService,
                                      AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
@@ -41,8 +42,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setFirstName(request.getNombre());
         user.setLastName(request.getApellidos());
         user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.getRoles().add(Rol.ROLE_USER);
+        user.setPassword(passwordEncoder.encode(request.getPassword())); // Modificado
+        user.getRoles().add(Rol.ROLE_USER); // Modificado
         userRepository.save(user);
         String jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt);

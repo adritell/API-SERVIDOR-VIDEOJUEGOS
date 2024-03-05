@@ -5,6 +5,7 @@ import com.api.videojuegos.entity.Usuario;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UsuarioService {
 
@@ -15,4 +16,6 @@ public interface UsuarioService {
     List<UsuarioResponse> getAllUsers();
 
     UsuarioResponse findUserById(Long id);
+    
+    Optional<Usuario> findByEmail(String email); // Agregado este método
 }

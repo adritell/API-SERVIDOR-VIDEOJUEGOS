@@ -17,4 +17,6 @@ public interface VideojuegosService {
     boolean deleteVideojuego(Long id);
     
     List<Videojuegos> searchVideojuegos(String keyword);
+    
+    Optional<Videojuegos> findByNombre(String nombre); // Agregado este método
 }

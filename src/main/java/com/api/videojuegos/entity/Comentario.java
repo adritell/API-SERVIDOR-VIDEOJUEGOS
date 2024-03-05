@@ -36,19 +36,19 @@ public class Comentario {
         this.text = text;
     }
 
-    public Usuario getUser() {
+    public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUser(Usuario user) {
-        this.usuario = user;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public Videojuegos getGame() {
+    public Videojuegos getVideojuegos() {
         return videojuegos;
     }
 
-    public void setGame(Videojuegos game) {
-        this.videojuegos = game;
+    public void setVideojuegos(Videojuegos videojuegos) {
+        this.videojuegos = videojuegos;
     }
 }

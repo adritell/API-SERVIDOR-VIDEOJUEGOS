@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +39,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         return new UsuarioResponse(user.getFirstName(), user.getEmail());
     }
 
+    
+    @Override
+    public Optional<Usuario> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+    
     @Override
     public UserDetailsService userDetailsService() {
         return (UserDetailsService) username -> userRepository.findByEmail(username)

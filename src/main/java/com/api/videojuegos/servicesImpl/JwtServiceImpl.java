@@ -1,14 +1,18 @@
 package com.api.videojuegos.servicesImpl;
 
 import java.security.Key;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +37,15 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        // Aquí obtienes los roles del usuario
+        Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
+        // Conviertes los roles a una lista de strings
+        List<String> roleNames = roles.stream()
+                                      .map(GrantedAuthority::getAuthority)
+                                      .collect(Collectors.toList());
+        // Agregas los roles al claim "roles"
+        claims.put("roles", roleNames);
+        // Creas el token con los claims incluyendo los roles
         return createToken(claims, userDetails.getUsername());
     }
 

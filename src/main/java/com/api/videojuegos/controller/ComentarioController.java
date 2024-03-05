@@ -1,7 +1,13 @@
 package com.api.videojuegos.controller;
 
+import com.api.videojuegos.dto.ComentarioRequest;
 import com.api.videojuegos.entity.Comentario;
+import com.api.videojuegos.entity.Usuario;
+import com.api.videojuegos.entity.Videojuegos;
 import com.api.videojuegos.service.ComentarioService;
+import com.api.videojuegos.service.UsuarioService;
+import com.api.videojuegos.service.VideojuegosService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -25,6 +32,12 @@ public class ComentarioController {
 
     @Autowired
     ComentarioService comentarioService;
+
+    @Autowired
+    UsuarioService usuarioService;
+
+    @Autowired
+    VideojuegosService videojuegosService;
 
     
     /**
@@ -62,13 +75,34 @@ public class ComentarioController {
 
     /**
      * Agrega un nuevo comentario.
-     * @param comentario Objeto Comentario con la información del nuevo comentario.
+     * @param comentarioRequest Objeto ComentarioRequest con la información del nuevo comentario.
      * @return Respuesta de éxito.
      */
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Void> addComentario(@RequestBody Comentario comentario) {
+    public ResponseEntity<Void> addComentario(@RequestBody ComentarioRequest comentarioRequest) {
         try {
+            // Obtener el usuario basado en el nombre proporcionado en la solicitud
+            Optional<Usuario> usuarioOptional = usuarioService.findByEmail(comentarioRequest.getUser());
+            Usuario usuario = usuarioOptional.orElse(null);
+            if (usuario == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Manejar el caso en que el usuario no exista
+            }
+
+            // Obtener el videojuego basado en el nombre proporcionado en la solicitud
+            Optional<Videojuegos> videojuegoOptional = videojuegosService.findByNombre(comentarioRequest.getGame());
+            Videojuegos videojuego = videojuegoOptional.orElse(null);
+            if (videojuego == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Manejar el caso en que el videojuego no exista
+            }
+
+            // Crear un nuevo objeto de Comentario y configurar el usuario y el videojuego
+            Comentario comentario = new Comentario();
+            comentario.setText(comentarioRequest.getText());
+            comentario.setUsuario(usuario);
+            comentario.setVideojuegos(videojuego);
+
+            // Guardar el comentario en la base de datos
             comentarioService.addComment(comentario);
             logger.info("Added new comment with ID: {}", comentario.getId());
             return new ResponseEntity<>(HttpStatus.CREATED);

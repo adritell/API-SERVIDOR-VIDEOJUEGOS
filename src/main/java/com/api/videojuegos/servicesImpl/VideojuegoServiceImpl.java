@@ -40,6 +40,11 @@ public class VideojuegoServiceImpl implements VideojuegosService {
             return null;
         }
     }
+    
+    @Override
+    public Optional<Videojuegos> findByNombre(String nombre) {
+        return videojuegosRepository.findByNombre(nombre);
+    }
 
     @Override
     public boolean deleteVideojuego(Long id) {
