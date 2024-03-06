@@ -41,8 +41,34 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     
     @Override
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
+    }
+
+    @Override
+    public Usuario updateUser(Long id, Usuario user) {
+        // Verificar si el usuario con el ID proporcionado existe
+        Optional<Usuario> optionalUsuario = userRepository.findById(id);
+        if (optionalUsuario.isPresent()) {
+            // Actualizar los detalles del usuario
+            Usuario usuarioExistente = optionalUsuario.get();
+            usuarioExistente.setFirstName(user.getFirstName());
+            usuarioExistente.setEmail(user.getEmail());
+            
+            return userRepository.save(usuarioExistente);
+        } else {
+            throw new IllegalArgumentException("User with ID " + id + " not found");
+        }
+    }
+    
+    @Override
     public Optional<Usuario> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+    
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
     
     @Override

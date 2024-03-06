@@ -17,5 +17,11 @@ public interface UsuarioService {
 
     UsuarioResponse findUserById(Long id);
     
-    Optional<Usuario> findByEmail(String email); // Agregado este método
+    Optional<Usuario> findByEmail(String email);
+    
+    boolean existsById(Long id); 
+    
+    Usuario updateUser(Long id, Usuario user); 
+    
+    void deleteUser(Long id); 
 }
