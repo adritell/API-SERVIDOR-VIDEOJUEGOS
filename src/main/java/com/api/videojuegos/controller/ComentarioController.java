@@ -111,6 +111,40 @@ public class ComentarioController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    
+    /**
+     * Actualiza un comentario existente por su ID.
+     * Requiere el rol 'ROLE_USER'.
+     * @param id ID del comentario a actualizar.
+     * @param comentarioRequest Objeto ComentarioRequest con los datos actualizados del comentario.
+     * @return Respuesta de éxito.
+     */
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<Void> updateComentario(@PathVariable Long id, @RequestBody ComentarioRequest comentarioRequest) {
+        try {
+            // Buscar el comentario por su ID
+            Comentario comentarioExistente = comentarioService.findById(id);
+            
+            // Verificar si el comentario existe
+            if (comentarioExistente == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            
+            // Actualizar el texto del comentario
+            comentarioExistente.setText(comentarioRequest.getText());
+            
+            // Guardar el comentario actualizado en la base de datos
+            comentarioService.addComment(comentarioExistente);
+            
+            logger.info("Updated comment with ID: {}", id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            logger.error("Error while updating comment with ID: {}", id, e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     /**
      * Elimina un comentario por su ID.

@@ -47,13 +47,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario updateUser(Long id, Usuario user) {
-        // Verificar si el usuario con el ID proporcionado existe
         Optional<Usuario> optionalUsuario = userRepository.findById(id);
         if (optionalUsuario.isPresent()) {
-            // Actualizar los detalles del usuario
             Usuario usuarioExistente = optionalUsuario.get();
             usuarioExistente.setFirstName(user.getFirstName());
             usuarioExistente.setEmail(user.getEmail());
+            usuarioExistente.setRoles(user.getRoles()); 
             
             return userRepository.save(usuarioExistente);
         } else {
